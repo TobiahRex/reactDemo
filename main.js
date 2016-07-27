@@ -7,11 +7,19 @@ const Root = React.createClass({
     };
   },
   addCount(event){
-    evenet.persist()
+    event.persist()
     console.log(event.target.id);
+
+    let counters = Object.assign({}, this.state.counters);
+    counters[event.target.id] += 1;
+    this.setState({ counters });
   },
-  minusCount(){
-    if (this.state.count > 0) this.setState({ count: this.state.count -= 1 })
+  minusCount(arg, event){
+    if (this.state.counters[arg] > 0) {
+      let counters = Object.assign({}, this.state.counters);
+      counters[arg] -= 1;
+      this.setState({ counters });
+    }
   },
   startTimer(){
     if(!this.state.timerID){
@@ -40,12 +48,12 @@ const Root = React.createClass({
       <h1>Hello from Root Component</h1>
       <p>Lets count some stuff!</p>
       <h3>Counter 1: { this.state.counters.counter1 }</h3>
-      <button onClick={ this.addCount }>+</button>
-      <button onClick={ this.minusCount }>-</button>
+      <button id='counter1' onClick={ this.addCount }>+</button>
+      <button onClick={ this.minusCount.bind(this, 'counter1') }>-</button>
 
       <h3>Counter 2: { this.state.counters.counter2 }</h3>
-      <button onClick={ this.addCount }>+</button>
-      <button onClick={ this.minusCount }>-</button>
+      <button id='counter2' onClick={ this.addCount }>+</button>
+      <button onClick={ this.minusCount.bind(this, 'counter2') }>-</button>
 
       <h1>{ this.state.time }</h1>
       <button onClick={ this.toggleTimer }>{ this.state.timerID ? 'STOP' : 'START' }</button>
