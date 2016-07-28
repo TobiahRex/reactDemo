@@ -35,7 +35,6 @@ const MessageForm = React.createClass({
     editThis(this.state.message)
   },
   render(){
-    let { editMsg } = this.props.editMsg;
     return (
       <div>
       <input type="text" value={ this.state.message } onChange={ (e) => this.setState({ message: e.target.value }) }/>
@@ -49,10 +48,11 @@ const Message = React.createClass({
   getInitialState(){
     return {
       msg4Edit: '',
+      edit: false,
     }
   },
   render(){
-    let { message, id, deleteMessage, editThis, editMessage } = this.props;
+    let { message, id, deleteMessage, editThis, submitEdit } = this.props;
     let _display;
     if (!this.state.edit) {
       _display =
@@ -66,8 +66,8 @@ const Message = React.createClass({
       _display =
       <li>
       <p>{ message }
-      <button onClick={ () => deleteMessage(id) }>SAVE</button>
-      <button onClick={ () => { let msg4Edit = editThis(id); this.setState({ msg4Edit, edit: true }); }}>CLOSE</button>
+      <button onClick={ () =>{ message = submitEdit(this.state.msg4Edit, id); this.setState({ edit: false }) } }>SAVE</button>
+      <button onClick={ () => { this.setState({ msg4Edit: '', edit: false }); }}>CLOSE</button>
       <input type="text" value={ this.state.msg4Edit } onChange={ e => this.setState({ msg4Edit: e.target.value }) }/>
       </p>
       </li>
@@ -75,6 +75,7 @@ const Message = React.createClass({
     return (
       <div>{ _display }</div>
     )
+  }
 });
 
 const Root = React.createClass({
@@ -84,7 +85,6 @@ const Root = React.createClass({
       time: 0,
       timerID: 0,
       messages: [],
-      editMsg: '',
     };
   },
   addCount(){
@@ -122,7 +122,7 @@ const Root = React.createClass({
       id: uuid(),
       deleteMessage: this.deleteMessage,
       editThis: this.editThis,
-      editMessage: this.editMessage,
+      submitEdit: this.submitEdit,
     };
     let messages = this.state.messages.concat(newMessage);
     this.setState({ messages });
@@ -135,16 +135,15 @@ const Root = React.createClass({
     let editMsg = this.state.messages.map(msgObj => {
       if (msgObj.id === id) { return msgObj.message }
     });
-    this.setState({ editMsg });
     return editMsg;
   },
-  editMessage(message, id) {
-    for (let msgObj of this.state.messages) {
-      if(msgObj.id === id) {
-        return msgObj.message = message;
-      }
-      return
-    }
+  submitEdit(message, id) {
+    let foundMsg = this.state.messages.map(msgObj => {
+      msgObj.id === id ? msgObj.message = message : null;
+      gthis.setState({ messages: this.state.messages });
+      return msgObj.message;
+    });
+    return foundMsg;
   },
   render(){
     let welcomeMsg = {
@@ -156,7 +155,6 @@ const Root = React.createClass({
       minusCount: this.minusCount,
       count: this.state.count,
     }
-    let editMsg = this.state.editMsg;
     let messageForm = { addMessage: this.addMessage, editThis: this.editThis };
     let messages = this.state.messages.map((messageObj) => {
       return <Message key={ messageObj.id } { ...messageObj } />
@@ -164,8 +162,7 @@ const Root = React.createClass({
     return (
       <div>
       <Welcome {...welcomeMsg} />
-      <MessageForm editMsg={this.state.editMsg} { ...messageForm } />
-      <p>{ editMsg }</p>
+      <MessageForm { ...messageForm } />
       <ul>{ messages }</ul>
 
       <Counter number="1" { ...counterProps } />
