@@ -29,6 +29,7 @@ const MessageForm = React.createClass({
     let { addMessage } = this.props;
     addMessage(this.state.message);
     this.setState({ message: '' });
+    let { editMessage } = this.props;
   },
   render(){
     return (<div>
@@ -39,10 +40,10 @@ const MessageForm = React.createClass({
 });
 const Message = React.createClass({
   render(){
-    let { message, id, deleteMessage } = this.props;
+    let { message, id, deleteMessage, editMessage } = this.props;
     return (
       <li>
-      <p>{ message } <button onClick={ () => deleteMessage(id) }>DELETE</button></p>
+      <p>{ message } <button onClick={ () => deleteMessage(id) }>DELETE</button><button onClick={ () => editMessage(id) }>EDIT</button></p>
 
       </li>
     )
@@ -55,6 +56,7 @@ const Root = React.createClass({
       time: 0,
       timerID: 0,
       messages: [],
+      editMsg: '',
     }
   },
   addCount(){
@@ -87,14 +89,24 @@ const Root = React.createClass({
     }
   },
   addMessage(message) {
-    let newMessage = { message, id: uuid(), deleteMessage: this.deleteMessage };
+    let newMessage = {
+      message,
+      id: uuid(),
+      deleteMessage: this.deleteMessage,
+      editMessage: this.editMessage
+    };
     let messages = this.state.messages.concat(newMessage);
     this.setState({ messages });
   },
   deleteMessage(id) {
-    console.log('id: ', id);
     let messages = this.state.messages.filter(msgObj => msgObj.id !== id);
     this.setState({ messages });
+  },
+  editMessage(id) {
+    let editMsg = this.state.messages.map(msgObj => {
+      if (msgObj.id === id) { return msgObj.message }
+    });
+    this.setState({ editMsg });
   },
   render(){
     let welcomeMsg = {
@@ -106,14 +118,15 @@ const Root = React.createClass({
       minusCount: this.minusCount,
       count: this.state.count,
     }
+    let editMsg = this.state.editMsg;
     let messages = this.state.messages.map((messageObj) => {
       return <Message key={ messageObj.id } {...messageObj} />
     });
     return (
       <div>
       <Welcome {...welcomeMsg} />
-      <MessageForm addMessage={ this.addMessage }/>
-
+      <MessageForm addMessage={ this.addMessage } />
+      <MessageForm editMessage={ this.editMessage } />
       <ul>{ messages }</ul>
 
       <Counter number="1" {...counterProps} />
