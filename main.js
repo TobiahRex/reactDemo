@@ -52,27 +52,29 @@ const Message = React.createClass({
     }
   },
   render(){
-    let { message, id, deleteMessage, editThis } = this.props;
+    let { message, id, deleteMessage, editThis, editMessage } = this.props;
     let _display;
     if (!this.state.edit) {
       _display =
       <li>
-      ``<p>{ message }
+      <p>{ message }
       <button onClick={ () => deleteMessage(id) }>DELETE</button>
-      <button onClick={ () => {
-        let msg4Edit = editThis(id);
-        setEdit({ msg4Edit });
-      }
-    }>EDIT</button>
-    </p>
-
-    </li>
-  } else {
-
-  }
-  return (
-  )
-}
+      <button onClick={ () => { let msg4Edit = editThis(id); this.setState({ msg4Edit, edit: true }); }}>EDIT</button>
+      </p>
+      </li>
+    } else {
+      _display =
+      <li>
+      <p>{ message }
+      <button onClick={ () => deleteMessage(id) }>SAVE</button>
+      <button onClick={ () => { let msg4Edit = editThis(id); this.setState({ msg4Edit, edit: true }); }}>CLOSE</button>
+      <input type="text" value={ this.state.msg4Edit } onChange={ e => this.setState({ msg4Edit: e.target.value }) }/>
+      </p>
+      </li>
+    }
+    return (
+      <div>{ _display }</div>
+    )
 });
 
 const Root = React.createClass({
@@ -120,6 +122,7 @@ const Root = React.createClass({
       id: uuid(),
       deleteMessage: this.deleteMessage,
       editThis: this.editThis,
+      editMessage: this.editMessage,
     };
     let messages = this.state.messages.concat(newMessage);
     this.setState({ messages });
@@ -133,7 +136,15 @@ const Root = React.createClass({
       if (msgObj.id === id) { return msgObj.message }
     });
     this.setState({ editMsg });
-
+    return editMsg;
+  },
+  editMessage(message, id) {
+    for (let msgObj of this.state.messages) {
+      if(msgObj.id === id) {
+        return msgObj.message = message;
+      }
+      return
+    }
   },
   render(){
     let welcomeMsg = {
