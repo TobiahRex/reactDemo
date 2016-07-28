@@ -4,7 +4,6 @@ const Welcome = React.createClass({
     return (
       <span>
       <h1>{greeting}, {info}</h1>
-      <p>Lets count some stuff!</p>
       </span>
     )
   }
@@ -37,7 +36,6 @@ const MessageForm = React.createClass({
   },
   render(){
     let { editMsg } = this.props.editMsg;
-    console.log('editMsg: ', editMsg);
     return (
       <div>
       <input type="text" value={ this.state.message } onChange={ (e) => this.setState({ message: e.target.value }) }/>
@@ -48,20 +46,31 @@ const MessageForm = React.createClass({
 });
 
 const Message = React.createClass({
+  getInitialState(){
+    return {
+      msg4Edit: '',
+    }
+  },
   render(){
     let { message, id, deleteMessage, editThis } = this.props;
-    return (
+    let _display;
+    if (!this.state.edit) {
+      _display =
       <li>
-      <p>{ message }
+      ``<p>{ message }
       <button onClick={ () => deleteMessage(id) }>DELETE</button>
       <button onClick={ () => {
-        let x = editThis(id);
-        console.log('x: ', x);
+        let msg4Edit = editThis(id);
+        setEdit({ msg4Edit });
       }
     }>EDIT</button>
     </p>
 
     </li>
+  } else {
+
+  }
+  return (
   )
 }
 });
@@ -123,8 +132,8 @@ const Root = React.createClass({
     let editMsg = this.state.messages.map(msgObj => {
       if (msgObj.id === id) { return msgObj.message }
     });
-    this.setState({ editMsg: });
-    return editMsg[0];
+    this.setState({ editMsg });
+
   },
   render(){
     let welcomeMsg = {
