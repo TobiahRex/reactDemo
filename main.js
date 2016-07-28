@@ -23,32 +23,46 @@ const Counter = React.createClass({
 });
 const MessageForm = React.createClass({
   getInitialState(){
-    return { message: '' }
+    return {
+      message: ''
+    }
   },
   onAddMessage(){
     let { addMessage } = this.props;
     addMessage(this.state.message);
     this.setState({ message: '' });
     let { editMessage } = this.props;
+    editMessage(this.state.message)
+  },
+  onSubmitEdit(){
+    let { editMsg } = this.props;
+    editMessage()
   },
   render(){
+    let { editmsg } = this.prop.editMsg;
     return (<div>
-    <input type="text" value={ this.state.message } onChange={ (e) => this.setState({ message: e.target.value }) }/>
-    <button onClick={ this.onAddMessage }>Add Message</button>
+    <input type="text" value={ this.state.message || editMsg } onChange={ (e) => this.setState({ message: e.target.value }) }/>
+    <button onClick={ this.onAddMessage }>{Add Message}</button>
     </div>)
   }
 });
+
 const Message = React.createClass({
   render(){
-    let { message, id, deleteMessage, editMessage } = this.props;
+    let { message, id, deleteMessage, editThis } = this.props;
     return (
       <li>
-      <p>{ message } <button onClick={ () => deleteMessage(id) }>DELETE</button><button onClick={ () => editMessage(id) }>EDIT</button></p>
+      <p>
+        { message }
+        <button onClick={ () => deleteMessage(id) }>DELETE</button>
+        <button onClick={ () =>  editThis(id) }>EDIT</button>
+      </p>
 
       </li>
     )
   }
 });
+
 const Root = React.createClass({
   getInitialState(){
     return {
@@ -57,7 +71,7 @@ const Root = React.createClass({
       timerID: 0,
       messages: [],
       editMsg: '',
-    }
+    };
   },
   addCount(){
     this.setState({ count: this.state.count+=1 });
@@ -93,7 +107,7 @@ const Root = React.createClass({
       message,
       id: uuid(),
       deleteMessage: this.deleteMessage,
-      editMessage: this.editMessage
+      editMessage: this.editMessage,
     };
     let messages = this.state.messages.concat(newMessage);
     this.setState({ messages });
@@ -102,11 +116,11 @@ const Root = React.createClass({
     let messages = this.state.messages.filter(msgObj => msgObj.id !== id);
     this.setState({ messages });
   },
-  editMessage(id) {
+  editThis(id) {
     let editMsg = this.state.messages.map(msgObj => {
       if (msgObj.id === id) { return msgObj.message }
     });
-    this.setState({ editMsg });
+    return editMsg;
   },
   render(){
     let welcomeMsg = {
@@ -118,22 +132,23 @@ const Root = React.createClass({
       minusCount: this.minusCount,
       count: this.state.count,
     }
-    let editMsg = this.state.editMsg;
+    let editMsg = { editMsg: this.state.editMsg };
+    let messageForm = { addMessage: this.addMessage, editThis: this.editThis };
     let messages = this.state.messages.map((messageObj) => {
-      return <Message key={ messageObj.id } {...messageObj} />
+      return <Message key={ messageObj.id } { ...messageObj } />
     });
     return (
       <div>
       <Welcome {...welcomeMsg} />
-      <MessageForm addMessage={ this.addMessage } />
-      <MessageForm editMessage={ this.editMessage } />
+      <MessageForm { editMsg: this.state.editMsg } { ...messageForm } />
       <ul>{ messages }</ul>
 
-      <Counter number="1" {...counterProps} />
+      <Counter number="1" { ...counterProps } />
       </div>
     )
   }
 });
+
 ReactDOM.render(
   // React.createElement('h1', null, 'toby')
   <Root/>,
