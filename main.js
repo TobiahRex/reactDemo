@@ -9,7 +9,6 @@ const Welcome = React.createClass({
     )
   }
 });
-
 const Counter = React.createClass({
   render(){
     const { addCount, minusCount, count, number } = this.props;
@@ -22,7 +21,6 @@ const Counter = React.createClass({
     )
   },
 });
-
 const MessageForm = React.createClass({
   getInitialState(){
     return { message: '' }
@@ -33,26 +31,23 @@ const MessageForm = React.createClass({
     this.setState({ message: '' });
   },
   render(){
-    const { addMessage } = this.props
-    return <div>
-      <input type="text" value={ this.state.message } onChange={ (e) => this.setState({ message: e.target.value }) }/>
-      <button onClick={ this.onAddMessage }>Add Message</button>
-    </div>
+    return (<div>
+    <input type="text" value={ this.state.message } onChange={ (e) => this.setState({ message: e.target.value }) }/>
+    <button onClick={ this.onAddMessage }>Add Message</button>
+    </div>)
   }
-})
-
+});
 const Message = React.createClass({
   render(){
     let { message, id, deleteMessage } = this.props;
     return (
       <li>
-        <p>{ message }</p>
-        <button onClick={ deleteMessage(id) }>DELETE</button>
+      <p>{ message } <button onClick={ () => deleteMessage(id) }>DELETE</button></p>
+
       </li>
     )
   }
-})
-
+});
 const Root = React.createClass({
   getInitialState(){
     return {
@@ -61,18 +56,6 @@ const Root = React.createClass({
       timerID: 0,
       messages: [],
     }
-  },
-  addMessage(message) {
-    let newMessage = {
-      message,
-      id: uuid(),
-    }
-    let messages = this.state.messages.concat(newMessage);
-    this.setState({ messages });
-  },
-  deleteMessage(id) {
-    let messages = this.state.messages.filter(msgObj => msgObj.id !== id);
-    this.setState({ messages });
   },
   addCount(){
     this.setState({ count: this.state.count+=1 });
@@ -103,8 +86,18 @@ const Root = React.createClass({
       this.stopTimer()
     }
   },
+  addMessage(message) {
+    let newMessage = { message, id: uuid(), deleteMessage: this.deleteMessage };
+    let messages = this.state.messages.concat(newMessage);
+    this.setState({ messages });
+  },
+  deleteMessage(id) {
+    console.log('id: ', id);
+    let messages = this.state.messages.filter(msgObj => msgObj.id !== id);
+    this.setState({ messages });
+  },
   render(){
-    let message = {
+    let welcomeMsg = {
       greeting: 'Hello world',
       info: 'My name is Toby.',
     }
@@ -114,24 +107,20 @@ const Root = React.createClass({
       count: this.state.count,
     }
     let messages = this.state.messages.map((messageObj) => {
-      messageObj.deleteMessage = this.deleteMessage;
-      return <Message key={ messageObj.id } { ...messageObj } />
-    })
+      return <Message key={ messageObj.id } {...messageObj} />
+    });
+    return (
+      <div>
+      <Welcome {...welcomeMsg} />
+      <MessageForm addMessage={ this.addMessage }/>
 
-    return (<div>
-    <Welcome {...message} />
+      <ul>{ messages }</ul>
 
-    <MessageForm addMessage={ this.addMessage }/>
-    <ul>
-      { messages }
-    </ul>
-    <Counter number="1" {...counterProps} />
-    <Counter number="2" {...counterProps} />
-    <Counter number="3" {...counterProps} />
-    </div>)
+      <Counter number="1" {...counterProps} />
+      </div>
+    )
   }
 });
-
 ReactDOM.render(
   // React.createElement('h1', null, 'toby')
   <Root/>,
