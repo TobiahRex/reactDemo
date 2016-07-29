@@ -15,12 +15,16 @@ export default class Properties extends Component {
   }
 
   submitProperty(property) {
-    let address = property;
-    let newProperty = { address };
+    let newProperty = Object.assign({}, property)
     newProperty.id = uuid();
     newProperty.deleteProperty = this.deleteProperty;
     let properties = this.state.properties.concat(newProperty);
     this.setState({ properties });
+  }
+
+  deleteProperty(id){
+    let updatedProperties = this.state.properties.filter(property => property.id !== id);
+    this.setState({ properties: updatedProperties });
   }
 
   render(){
