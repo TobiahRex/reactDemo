@@ -12,7 +12,7 @@ export default class Tenant extends Component {
       return(
         <tr key={ tenant.id }>
           <td>{ tenant.name }</td>
-          <td><button onClick={ () => tenant.deleteTenant(tenant.id) } className='btn btn-default btn-danger'><i className='fa fa-trash'></i> Delete</button></td>
+          <td><button onClick={ () => deleteTenant(tenant.id) } className='btn btn-default btn-danger'><i className='fa fa-trash'></i> Delete</button></td>
         </tr>
       )
     }) : []
