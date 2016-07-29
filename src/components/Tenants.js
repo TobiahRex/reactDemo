@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Tenant from './Tenant'
+import TenantForm from './TenantForm'
 
 const uuid = require('uuid');
 
@@ -16,9 +17,8 @@ export default class Tenants extends Component {
 
   onSubmit(tenantObj) {
     let newTenant = Object.assign({}, tenantObj);
-    newTenant.id: uuid();
-    newTenant.delete: this.deleteTenant;
-    }
+    newTenant.id = uuid();
+    newTenant.delete = this.deleteTenant;
     let tenants = this.state.tenants.concat(newTenant);
     this.setState({ tenants });
   }
@@ -33,9 +33,7 @@ export default class Tenants extends Component {
       deleteTenant: this.deleteTenant,
       tenants: this.state.tenants
     }
-    let newTenant = {
-      add: this.onSubmit
-    }
+    let newTenant = { onSubmit: this.onSubmit }
     return(
       <div>
         <h1> Tenants </h1>
