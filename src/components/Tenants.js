@@ -35,7 +35,7 @@ export default class Tenants extends Component {
         <h1> Tenants </h1>
         <input type='text' placeholder='Tenant Name' value={ this.state.name } onChange={ e => this.setState({ name: e.target.value }) }/>
         <button className='btn btn-default' onClick={ this.onSubmit }>Submit</button>
-        <TenantTable tenants={ this.state.tenants } />
+        <Tenant tenants={ this.state.tenants } />
       </div>
     )
   }
