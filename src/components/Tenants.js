@@ -14,20 +14,25 @@ export default class Tenants extends Component {
   }
 
   onSubmit() {
-    console.log(this.state);
+    let tenants = this.state.tenants.push(this.state.name);
+    this.setState({ tenants });
   }
 
   render() {
     let tenants;
     if (this.state.tenants) {
-      this.state.tenants.map(tenant => {
+      tenants = this.state.tenants.map((tenant) => {
         return (
-          <tr key=''>
-
+          <tr key={ tenant.id }>
+            <td>{ tenant.name }</td>
+            <td><button className='btn btn-default' onClick={ deleteTenant(tenant.id) }>DELETE</button></td>
           </tr>
         )
       })
+    } else {
+      tenants = [];
     }
+
     return(
       <div>
         <h1> Tenants </h1>
