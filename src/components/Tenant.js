@@ -8,7 +8,6 @@ export default class Tenant extends Component {
   }
 
   render(){
-    let { deleteTenant } = this.props;
     let tenants = this.props.tenants ? this.props.tenants.map(tenant => {
       return(
         <tr key={ tenant.id }>
