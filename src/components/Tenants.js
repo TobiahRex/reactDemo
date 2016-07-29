@@ -13,12 +13,13 @@ export default class Tenants extends Component {
       name: ''
     }
     this.onSubmit = this.onSubmit.bind(this);
+    this.deleteTenant = this.deleteTenant.bind(this);
   }
 
   onSubmit(tenantObj) {
     let newTenant = Object.assign({}, tenantObj);
     newTenant.id = uuid();
-    newTenant.delete = this.deleteTenant;
+    newTenant.deleteTenant = this.deleteTenant;
     let tenants = this.state.tenants.concat(newTenant);
     this.setState({ tenants });
   }
@@ -30,10 +31,12 @@ export default class Tenants extends Component {
 
   render() {
     let tenantProps = {
-      deleteTenant: this.deleteTenant,
       tenants: this.state.tenants
+      // deleteTenant: this.deleteTenant
     }
-    let newTenant = { onSubmit: this.onSubmit }
+    let newTenant = {
+      onSubmit: this.onSubmit
+    }
     return(
       <div>
         <h1> Tenants </h1>

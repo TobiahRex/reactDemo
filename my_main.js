@@ -194,7 +194,7 @@ ReactDOM.render(
 //   },
 //   minusCount(arg, event){
 //     if (this.state.counters[arg] > 0) {
-//       let counters = Object.assign({}, this.state.counters);
+      // let counters = Object.assign({}, this.state.counters);
 //       counters[arg] -= 1;
 //       this.setState({ counters });
 //     }

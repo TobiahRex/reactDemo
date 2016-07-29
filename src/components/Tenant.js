@@ -4,6 +4,7 @@ export default class Tenant extends Component {
 
   constructor(props){
     super(props);
+
   }
 
   render(){
@@ -12,7 +13,8 @@ export default class Tenant extends Component {
       return(
         <tr key={ tenant.id }>
           <td>{ tenant.name }</td>
-          <td><button onClick={ () => deleteTenant(tenant.id) } className='btn btn-default btn-danger'><i className='fa fa-trash'></i> Delete</button></td>
+          <td>{ tenant.email }</td>
+          <td><button onClick={ () => tenant.deleteTenant(tenant.id) } className='btn btn-default btn-danger'><i className='fa fa-trash'></i> Delete</button></td>
         </tr>
       )
     }) : []
@@ -22,6 +24,7 @@ export default class Tenant extends Component {
         <thead>
           <tr>
             <th className='text-center'>Name</th>
+            <th className='text-center'>Email</th>
             <th className='text-center'>Delete</th>
           </tr>
         </thead>

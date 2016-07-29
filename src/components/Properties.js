@@ -18,11 +18,18 @@ export default class Property extends Component {
   }
 
   render(){
+    let propertyFormProps = {
+      
+    }
+    let propertyProps = {
+      properties: this.state.properties
+    }
+
     return (
       <div>
         <h1> Properties </h1>
-        <input value={ this.state.name } onChange={ e => this.setState({ name: e.target.value }) } />
-
+        <PropertyForm { ...propertyFormProps }/>
+        <Property { ...propertyProps } />
       </div>
     )
   }
