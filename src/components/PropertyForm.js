@@ -9,6 +9,14 @@ export default class PropertyForm extends Component {
       state: '',
       zip: ''
     }
+    this.compileAndSend = this.compileAndSend.bind(this);
+  }
+
+  compileAndSend(stateAddress){
+    let address = {
+      street: stateAddress.street
+    }
+    submitProperty(address);
   }
 
   render(){
@@ -27,7 +35,7 @@ export default class PropertyForm extends Component {
         <div className="form-group">
           <input id='email' type='text' className='form-control' placeholder='Zip' value={ this.state.zip } onChange={ e => this.setState({ zip: e.target.value }) }/>
         </div>
-        <button onClick={ () =>{ submitProperty(this.state); this.setState({ street: '', city: '', state: '', zip: '' }) }} className="btn btn-default">Add Property</button>
+        <button onClick={ () =>{ compileAndSend(this.state); this.setState({ street: '', city: '', state: '', zip: '' }) }} className="btn btn-default">Add Property</button>
       </form>
     )
   }

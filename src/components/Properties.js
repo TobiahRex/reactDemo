@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropertyForm from './PropertyForm'
 import Property from './Property'
 
+const uuid = require('uuid');
+
 export default class Property extends Component {
 
   constructor(props){
@@ -14,6 +16,7 @@ export default class Property extends Component {
 
   submitProperty(property) {
     let newProperty = Object.assign({}, property);
+    newProperty.id = uuid();
     newProperty.deleteProperty = this.deleteProperty;
     let properties = this.state.properties.concat(newProperty);
     this.setState({ properties });
