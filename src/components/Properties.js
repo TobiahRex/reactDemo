@@ -5,25 +5,14 @@ export default class Property extends Component {
   constructor(props){
     super(props)
 
-    this.state = {
-      properties: [],
-      name: '',
-      address: {
-        street: '',
-        city: '',
-        state: '',
-        zip: 0,
-      },
-    }
+    this.state = { properties: [] }
+    this.submitProperty = this.submitProperty.bind(this);
+    this.deleteProperty = this.deleteProperty.bind(this);
   }
 
   render(){
-    let propertyFormProps = {
-      
-    }
-    let propertyProps = {
-      properties: this.state.properties
-    }
+    let propertyFormProps = { submitProperty: this.submitProperty }
+    let propertyProps = { properties: this.state.properties }
 
     return (
       <div>

@@ -12,11 +12,11 @@ export default class Tenants extends Component {
       tenants: [],
       name: ''
     }
-    this.onSubmit = this.onSubmit.bind(this);
+    this.submitTenant = this.submitTenant.bind(this);
     this.deleteTenant = this.deleteTenant.bind(this);
   }
 
-  onSubmit(tenantObj) {
+  submitTenant(tenantObj) {
     let newTenant = Object.assign({}, tenantObj);
     newTenant.id = uuid();
     newTenant.deleteTenant = this.deleteTenant;
@@ -35,7 +35,7 @@ export default class Tenants extends Component {
       // deleteTenant: this.deleteTenant
     }
     let newTenant = {
-      onSubmit: this.onSubmit
+      submitTenant: this.submitTenant
     }
     return(
       <div>

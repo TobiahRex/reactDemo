@@ -12,7 +12,7 @@ export default class TenantForm extends Component {
   }
 
   render(){
-    let { onSubmit } = this.props
+    let { submitTenant } = this.props
     return (
 
       <form className="navbar-form navbar-left" role="search">
@@ -22,8 +22,9 @@ export default class TenantForm extends Component {
         <div className="form-group">
           <input id='email' type='text' className='form-control' placeholder='Email' value={ this.state.email } onChange={ e => this.setState({ email: e.target.value }) }/>
         </div>
-        <button onClick={ () =>{ onSubmit(this.state); this.setState({ name: '', email: '' }) }} className="btn btn-default">Add Tenant</button>
+        <button onClick={ () =>{ submitTenant(this.state); this.setState({ name: '', email: '' }) }} className="btn btn-default">Add Tenant</button>
       </form>
+      
     )
   }
 
