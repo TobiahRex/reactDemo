@@ -4,7 +4,7 @@ import Property from './Property'
 
 const uuid = require('uuid');
 
-export default class Property extends Component {
+export default class Properties extends Component {
 
   constructor(props){
     super(props)
@@ -15,7 +15,8 @@ export default class Property extends Component {
   }
 
   submitProperty(property) {
-    let newProperty = Object.assign({}, property);
+    let address = property;
+    let newProperty = { address };
     newProperty.id = uuid();
     newProperty.deleteProperty = this.deleteProperty;
     let properties = this.state.properties.concat(newProperty);
